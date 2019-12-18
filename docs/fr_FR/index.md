@@ -17,7 +17,11 @@ Installation
 
 3 - Ajouter votre pompe à chaleur
 
+![Pac_Hayward](../images/doc_1.png)
+
 4 - configurer votre pompe à chaleur
+
+![Pac_Hayward](../images/doc_2.png)
 
 Login : login de votre module wifi
 
