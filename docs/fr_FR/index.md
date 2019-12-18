@@ -34,6 +34,7 @@ Utilisation
 
 Le plugin vous montre la valeur de consigne, la température d'entrée et de sortie de l'eau, l’état de la pompe, le mode en cours et la consigne demandée.
 
+![Pac_Hayward](../images/doc_3.png)
 
 Vous pouvez mettre en marche ou en arrêt la pompe, changer de mode de fonctionnement et modifier la consigne. Pour modifier celle-ci il vous faut actionner le slider pour choisir la température souhaitée et la valider à l'aide du bouton modifier consigne.
 
