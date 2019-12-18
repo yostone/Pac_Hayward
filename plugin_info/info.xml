@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<info>
+    <id>PaC_Hayward</id>
+    <name>Pompe à chaleur Hayward</name>
+    <description>Plugin pour piloter votre pompe à chaleur de piscine</description>
+    <icon>fa fa-file</icon>
+    <licence>AGPL</licence>
+    <author>Yoann Brunel</author>
+    <installation>Aucune</installation>
+    <require>1.200</require>
+    <version>0.1</version>
+    <category>monitoring</category>
+</info>
