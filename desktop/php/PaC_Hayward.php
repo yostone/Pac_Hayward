@@ -79,7 +79,7 @@ foreach ($eqLogics as $eqLogic) {
                     <select id="sel_object" class="eqLogicAttr form-control" data-l1key="object_id">
                         <option value="">{{Aucun}}</option>
                         <?php
-foreach (object::all() as $object) {
+foreach (JeeObject::all() as $object) {
 	echo '<option value="' . $object->getId() . '">' . $object->getName() . '</option>';
 }
 ?>
