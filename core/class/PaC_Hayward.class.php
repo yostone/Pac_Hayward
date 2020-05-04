@@ -674,8 +674,9 @@ public function ExecuteCmdSetConsigne($VarConsigne) {
 		}
 		$action->setType('action');
 		$action->setSubType('slider');
-		$action->setConfiguration('minValue', 16);
-		$action->setConfiguration('maxValue', 64);
+	    	$action->setConfiguration('stepValue', 0.5);
+		$action->setConfiguration('minValue', 8);
+		$action->setConfiguration('maxValue', 32);
 		$action->setEqLogic_id($this->getId());
 		$action->setOrder(13);
 		$action->save();		
@@ -915,7 +916,7 @@ class PaC_HaywardCmd extends cmd {
 				$eqlogic->checkAndUpdateCmd('2_Power', $info);
 				break;
 			case '6_SliderConsigne':
-				$info = $eqlogic->LectureSliderConsigne($_options['slider']/2);
+				$info = $eqlogic->LectureSliderConsigne($_options['slider']/1);
 				$eqlogic->checkAndUpdateCmd('6_RetourSliderconsigne', $info); 
 				break;
 			case '6_Set_consigne':
