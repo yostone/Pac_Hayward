@@ -659,7 +659,7 @@ public function ExecuteCmdSetConsigne($VarConsigne) {
 		$info->setEqLogic_id($this->getId());
 		$info->setType('info');
 		$info->setSubType('string');
-		$info->setConfiguration('consigne');
+		$info->setConfiguration('consigne','valeur');
 		//$info->setIsHistorized(1);
 		$info->setUnite('°C');
 		$info->setOrder(12);
