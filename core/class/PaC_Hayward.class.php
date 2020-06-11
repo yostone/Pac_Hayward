@@ -302,7 +302,38 @@ Public function Update() {
 		log::add('PaC_Hayward', 'debug','Function Lecture_Power : Ok' );
 		return $divs[15]->nodeValue ;
 	}
-	
+  
+	public function LectureCycle() {
+      	$EntreeEau = $this->Lecture_EntreeEau();
+        $SortieEau = $this->Lecture_SortieEau();
+        $Consigne = $this->Lecture_Consigne();	
+        $Mode = $this->Lecture_Mode();
+		$Power = $this->Lecture_Power();		
+		$EnCycle = "A l'arret";
+		
+		if ($Power=="On" ){
+          	$EnCycle = "En veille";
+			if ($Mode=="Chauffage" ){
+				if ($SortieEau>=$EntreeEau+1 and $EntreeEau<=$Consigne){
+					$EnCycle= "En chauffe";
+				}
+			} elseif ($Mode=="Refroidissement" ){
+				if ($EntreeEau>=$SortieEau+1 and $SortieEau>=$Consigne){
+					$EnCycle= "En refroidissement";
+				}
+			} elseif ($Mode=="Auto" ){
+				if ($SortieEau>=$EntreeEau+1 and $EntreeEau<=$Consigne){
+					$EnCycle= "En chauffe";
+                } elseif ($EntreeEau>=$SortieEau+1 and $SortieEau>=$Consigne){
+                  	$EnCycle= "En refroidissement";
+				}
+			}
+		}
+		
+		log::add('PaC_Hayward', 'debug','Function LectureCycle : Lancement/Ok' );
+		return $EnCycle ;
+	}
+  
 public function ExecuteCmdPompe($VarPilotagePompe) {
 	try {
 		log::add('PaC_Hayward', 'debug','Function ExecuteCmdPompe : Lancement' );
@@ -622,6 +653,19 @@ public function ExecuteCmdSetConsigne($VarConsigne) {
 		$info->setSubType('string');
 		$info->setOrder(4);
 		$info->save();	
+      
+       //info si la pompe tourne
+		$info = $this->getCmd(null, '8_EnCycle');
+		if (!is_object($info)) {
+			$info = new PaC_HaywardCmd();
+			$info->setName(__('Etat : ', __FILE__));
+		}
+		$info->setLogicalId('8_EnCycle');
+		$info->setEqLogic_id($this->getId());
+		$info->setType('info');
+		$info->setSubType('string');
+		$info->setOrder(40);
+		$info->save();	
 		
 		//rafraichissement des infos
 		$refresh = $this->getCmd(null, 'refresh');
@@ -858,6 +902,8 @@ class PaC_HaywardCmd extends cmd {
 				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
 				$info = $eqlogic->Lecture_Power(); 	
 				$eqlogic->checkAndUpdateCmd('2_Power', $info);
+            	$info = $eqlogic->LectureCycle(); 	
+				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
 				break;
 			case '3_Arret':
 				$cmd = $eqlogic->ExecuteCmdPompe('Arret');
@@ -872,6 +918,8 @@ class PaC_HaywardCmd extends cmd {
 				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
 				$info = $eqlogic->Lecture_Power(); 	
 				$eqlogic->checkAndUpdateCmd('2_Power', $info);
+            	$info = $eqlogic->LectureCycle(); 	
+				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
 				break;
 			case '5_ModeRefroidissement':
 				$cmd = $eqlogic->ExecuteCmdPompe('Refroidissement');
@@ -886,6 +934,8 @@ class PaC_HaywardCmd extends cmd {
 				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
 				$info = $eqlogic->Lecture_Power(); 	
 				$eqlogic->checkAndUpdateCmd('2_Power', $info);
+            	$info = $eqlogic->LectureCycle(); 	
+				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
 				break;
 			case '5_ModeChauffage':
 				$cmd = $eqlogic->ExecuteCmdPompe('Chauffage');
@@ -900,6 +950,8 @@ class PaC_HaywardCmd extends cmd {
 				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
 				$info = $eqlogic->Lecture_Power(); 	
 				$eqlogic->checkAndUpdateCmd('2_Power', $info);
+            	$info = $eqlogic->LectureCycle(); 	
+				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
 				break;
 			case '5_ModeAuto':
 				$cmd = $eqlogic->ExecuteCmdPompe('Auto');
@@ -914,6 +966,8 @@ class PaC_HaywardCmd extends cmd {
 				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
 				$info = $eqlogic->Lecture_Power(); 	
 				$eqlogic->checkAndUpdateCmd('2_Power', $info);
+            	$info = $eqlogic->LectureCycle(); 	
+				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
 				break;
 			case '6_SliderConsigne':
 				$info = $eqlogic->LectureSliderConsigne($_options['slider']/1);
@@ -940,6 +994,9 @@ class PaC_HaywardCmd extends cmd {
 				
 				$info = $eqlogic->Lecture_Power(); 	
 				$eqlogic->checkAndUpdateCmd('2_Power', $info); 
+            
+            	$info = $eqlogic->LectureCycle(); 	
+				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
 				break;
 			case '7_Debug':
 				//break;
@@ -947,7 +1004,12 @@ class PaC_HaywardCmd extends cmd {
 			case '7timer':
 				$info = $eqlogic->ExecuteCmdPompe('TimerTime');
 				break;
-			
+            
+            case '8_EnCycle':
+            	$info = $eqlogic->LectureCycle(); 	
+				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+				break;
+            
 			case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm . 
 				$info = $eqlogic->Update();
 				
@@ -965,6 +1027,9 @@ class PaC_HaywardCmd extends cmd {
 				
 				$info = $eqlogic->Lecture_Power(); 	
 				$eqlogic->checkAndUpdateCmd('2_Power', $info); 
+            
+            	$info = $eqlogic->LectureCycle(); 	
+				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
 				
 				
 				break;
@@ -973,5 +1038,3 @@ class PaC_HaywardCmd extends cmd {
 
     /*     * **********************Getteur Setteur*************************** */
 }
-
-
