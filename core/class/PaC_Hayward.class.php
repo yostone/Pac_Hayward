@@ -654,7 +654,7 @@ public function ExecuteCmdSetConsigne($VarConsigne) {
 		$info->setOrder(4);
 		$info->save();	
       
-       //info si la pompe tourne
+                //info si la pompe tourne
 		$info = $this->getCmd(null, '8_EnCycle');
 		if (!is_object($info)) {
 			$info = new PaC_HaywardCmd();
