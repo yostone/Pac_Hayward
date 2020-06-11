@@ -722,6 +722,7 @@ public function ExecuteCmdSetConsigne($VarConsigne) {
 		$action->setConfiguration('minValue', 8);
 		$action->setConfiguration('maxValue', 32);
 		$action->setEqLogic_id($this->getId());
+	    	$action->setUnite('°C');
 		$action->setOrder(13);
 		$action->save();		
 		
