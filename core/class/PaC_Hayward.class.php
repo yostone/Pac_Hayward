@@ -64,7 +64,59 @@ public static function cron5() {
 	} catch (Exception $e) {
 		log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron5 '  . ' ' . $e->getMessage()));
 	}	
-}	 
+}
+	
+//Fonction exécutée 10min  par Jeedom
+public static function cron10() {
+	try {
+		log::add('PaC_Hayward', 'debug','Function cron10 : Lancement');
+		//$handle = @fopen("http://smartemp.hayward.fr:9000/", "r");
+		//if ($handle) {
+		//	log::add('PaC_Hayward', 'debug','Function cron10 : Serveur hayward ok' );
+			foreach (self::byType('PaC_Hayward') as $PaC_Hayward) {//parcours tous les équipements du plugin vdm
+				if ($PaC_Hayward->getIsEnable() == 1) {//vérifie que l'équipement est actif
+					$cmd = $PaC_Hayward->getCmd(null, 'refresh');//retourne la commande "refresh si elle exxiste
+					if (!is_object($cmd)) {//Si la commande n'existe pas
+						continue; //continue la boucle
+					}
+					$cmd->execCmd(); // la commande existe on la lance
+					log::add('PaC_Hayward', 'debug','Function cron10 : Ok');
+				}
+			}
+		//} else {
+		//	log::add('PaC_Hayward', 'error','Function cron10 : Serveur hayward down' );
+		//}
+		  
+	} catch (Exception $e) {
+		log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron10 '  . ' ' . $e->getMessage()));
+	}	
+}
+	
+//Fonction exécutée 15min  par Jeedom
+public static function cron15() {
+	try {
+		log::add('PaC_Hayward', 'debug','Function cron15 : Lancement');
+		//$handle = @fopen("http://smartemp.hayward.fr:9000/", "r");
+		//if ($handle) {
+		//	log::add('PaC_Hayward', 'debug','Function cron15 : Serveur hayward ok' );
+			foreach (self::byType('PaC_Hayward') as $PaC_Hayward) {//parcours tous les équipements du plugin vdm
+				if ($PaC_Hayward->getIsEnable() == 1) {//vérifie que l'équipement est actif
+					$cmd = $PaC_Hayward->getCmd(null, 'refresh');//retourne la commande "refresh si elle exxiste
+					if (!is_object($cmd)) {//Si la commande n'existe pas
+						continue; //continue la boucle
+					}
+					$cmd->execCmd(); // la commande existe on la lance
+					log::add('PaC_Hayward', 'debug','Function cron15 : Ok');
+				}
+			}
+		//} else {
+		//	log::add('PaC_Hayward', 'error','Function cron15 : Serveur hayward down' );
+		//}
+		  
+	} catch (Exception $e) {
+		log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron15 '  . ' ' . $e->getMessage()));
+	}	
+}	
 
 //Fonction exécutée automatiquement toutes les heures par Jeedom
  //public static function cronHourly () {
