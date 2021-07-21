@@ -202,34 +202,47 @@ Public function Update() {
 		log::add('PaC_Hayward', 'debug','Function Lecture_Ambiante : Lancement' );
 		//$url = "http://192.168.0.10/pompeHayward.html";
 		$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
-		$url = "http://".$MyIpJeedom."/pompeHayward.html";
+		$url = "http://".$MyIpJeedom."/pompeHayward.html"; 
 		$data = file_get_contents($url);
-		$data = str_replace('?', '', $data);
-		@$dom = new DOMDocument();
-		libxml_use_internal_errors(true);
-		$dom->loadHTML($data);
-		libxml_use_internal_errors(false);
-		$xpath = new DOMXPath($dom);
-		$divs = $xpath->query('//div[@class="pc"]//div[@class="kg1"]//span');
-		log::add('PaC_Hayward', 'debug','Function Lecture_Ambiante : Ok' );
-		return $divs[0]->nodeValue ;
+        if ($data == false) {
+			log::add('PaC_Hayward', 'debug','Function Lecture_Ambiante : page vierge' );
+          	return -100;
+        }
+        else {      
+			$data = str_replace('?', '', $data);
+			@$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);    
+			libxml_use_internal_errors(false);
+			$xpath = new DOMXPath($dom);
+			$divs = $xpath->query('//div[@class="pc"]//div[@class="kg1"]//span');
+			log::add('PaC_Hayward', 'debug','Function Lecture_Ambiante : Ok' );
+			return $divs[0]->nodeValue ;
+        }
 	}
-
+  
 	public function Lecture_EntreeEau() {
 		log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : Lancement' );
 		//$url = "http://192.168.0.10/pompeHayward.html";
 		$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
-		$url = "http://".$MyIpJeedom."/pompeHayward.html";
+		$url = "http://".$MyIpJeedom."/pompeHayward.html"; 
 		$data = file_get_contents($url);
-		$data = str_replace('?', '', $data);
-		@$dom = new DOMDocument();
-		libxml_use_internal_errors(true);
-		$dom->loadHTML($data);
-		libxml_use_internal_errors(false);
-		$xpath = new DOMXPath($dom);
-		$divs = $xpath->query('//div[@class="pc"]//div[@class="kg1"]//span');
-		log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : Ok' );
-		return $divs[1]->nodeValue ;
+        if ($data == false) {
+			log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : page vierge' );
+          	return -100;
+        }
+        else {
+        	$data = str_replace('?', '', $data);
+			@$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
+			$xpath = new DOMXPath($dom);
+			$divs = $xpath->query('//div[@class="pc"]//div[@class="kg1"]//span');
+			log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : Ok' );
+			return $divs[1]->nodeValue ;
+		}
+
 	}
 
 	public function Lecture_SortieEau() {
@@ -239,14 +252,20 @@ Public function Update() {
 		$url = "http://".$MyIpJeedom."/pompeHayward.html";
 		$data = file_get_contents($url);
 		$data = str_replace('?', '', $data);
-		@$dom = new DOMDocument();
-		libxml_use_internal_errors(true);
-		$dom->loadHTML($data);
-		libxml_use_internal_errors(false);
-		$xpath = new DOMXPath($dom);
-		$divs = $xpath->query('//div[@class="pc"]//div[@class="kg1"]//span');
-		log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : Ok' );
-		return $divs[2]->nodeValue ;
+        if ($data == false) {
+			log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : page vierge' );
+          	return -100;
+        }
+        else {      
+			@$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
+			$xpath = new DOMXPath($dom);
+			$divs = $xpath->query('//div[@class="pc"]//div[@class="kg1"]//span');
+			log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : Ok' );
+			return $divs[2]->nodeValue ;
+        }
 	}
 	
 	public function Lecture_Consigne() {
@@ -255,15 +274,21 @@ Public function Update() {
 		$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
 		$url = "http://".$MyIpJeedom."/pompeHayward.html";
 		$data = file_get_contents($url);
-		$data = str_replace('?', '', $data);
-		@$dom = new DOMDocument();
-		libxml_use_internal_errors(true);
-		$dom->loadHTML($data);
-		libxml_use_internal_errors(false);
-		$xpath = new DOMXPath($dom);
-		$divs = $xpath->query('//div[@class="pc"]//div[@class="kg"]//span');
-		log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : Ok' );
-		return $divs[1]->nodeValue ;
+        if ($data == false) {
+			log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : page vierge' );
+          	return -100;
+        }
+        else {      
+			$data = str_replace('?', '', $data);
+			@$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
+			$xpath = new DOMXPath($dom);
+			$divs = $xpath->query('//div[@class="pc"]//div[@class="kg"]//span');
+			log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : Ok' );
+			return $divs[1]->nodeValue ;
+        }
 	}
 	
 	public function LectureSliderConsigne($valueSlider) {
@@ -277,14 +302,20 @@ Public function Update() {
 		$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
 		$url = "http://".$MyIpJeedom."/pompeHayward.html";
 		$data = file_get_contents($url);
-		@$dom = new DOMDocument();
-		libxml_use_internal_errors(true);
-		$dom->loadHTML($data);
-		libxml_use_internal_errors(false);
-		$xpath = new DOMXPath($dom);
-		$divs = $xpath->query('//div[@class="pc"]//div[@class="kg"]//span');
-		log::add('PaC_Hayward', 'debug','Function Lecture_Mode : Ok' );
-		return $divs[0]->nodeValue ;
+        if ($data == false) {
+			log::add('PaC_Hayward', 'debug','Function Lecture_Mode : page vierge' );
+          	return -100;
+        }
+        else {      
+			@$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
+			$xpath = new DOMXPath($dom);
+			$divs = $xpath->query('//div[@class="pc"]//div[@class="kg"]//span');
+			log::add('PaC_Hayward', 'debug','Function Lecture_Mode : Ok' );
+			return $divs[0]->nodeValue ;
+        }
 	}
 	
 	public function Lecture_Power() {
@@ -293,14 +324,20 @@ Public function Update() {
 		$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
 		$url = "http://".$MyIpJeedom."/pompeHayward.html";
 		$data = file_get_contents($url);
-		@$dom = new DOMDocument();
-		libxml_use_internal_errors(true);
-		$dom->loadHTML($data);
-		libxml_use_internal_errors(false);
-		$xpath = new DOMXPath($dom);
-		$divs = $xpath->query('//div[@class="pc"]//span');
-		log::add('PaC_Hayward', 'debug','Function Lecture_Power : Ok' );
-		return $divs[15]->nodeValue ;
+        if ($data == false) {
+			log::add('PaC_Hayward', 'debug','Function Lecture_Power : page vierge' );
+          	return -100;
+        }
+        else {      
+			@$dom = new DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($data);
+			libxml_use_internal_errors(false);
+			$xpath = new DOMXPath($dom);
+			$divs = $xpath->query('//div[@class="pc"]//span');
+			log::add('PaC_Hayward', 'debug','Function Lecture_Power : Ok' );
+			return $divs[15]->nodeValue ;
+        }
 	}
   
 	public function LectureCycle() {
@@ -893,82 +930,177 @@ class PaC_HaywardCmd extends cmd {
 			case '3_Marche':
 				$cmd = $eqlogic->ExecuteCmdPompe('Marche');
 				$info = $eqlogic->Update();
-				$info = $eqlogic->Lecture_Consigne(); 	
-				$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+            
+				$info = $eqlogic->Lecture_Consigne(); 
+            	if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+                }
+            
 				$info = $eqlogic->Lecture_EntreeEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_SortieEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+                }
+            
 				$info = $eqlogic->Lecture_Mode(); 	
-				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+                }
+            
 				$info = $eqlogic->Lecture_Power(); 	
-				$eqlogic->checkAndUpdateCmd('2_Power', $info);
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('2_Power', $info);
+                }
+            
             	$info = $eqlogic->LectureCycle(); 	
-				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+                }
+                  
 				break;
 			case '3_Arret':
 				$cmd = $eqlogic->ExecuteCmdPompe('Arret');
 				$info = $eqlogic->Update();
+                  
 				$info = $eqlogic->Lecture_Consigne(); 	
-				$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+                if ($info != -100) {  
+					$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_EntreeEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_SortieEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_Mode(); 	
-				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_Power(); 	
-				$eqlogic->checkAndUpdateCmd('2_Power', $info);
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('2_Power', $info);
+                }
+                  
             	$info = $eqlogic->LectureCycle(); 	
-				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+                }
+                  
 				break;
 			case '5_ModeRefroidissement':
 				$cmd = $eqlogic->ExecuteCmdPompe('Refroidissement');
 				$info = $eqlogic->Update();
+                  
 				$info = $eqlogic->Lecture_Consigne(); 	
-				$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_EntreeEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_SortieEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_Mode(); 	
-				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_Power(); 	
-				$eqlogic->checkAndUpdateCmd('2_Power', $info);
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('2_Power', $info);
+                }
+                  
             	$info = $eqlogic->LectureCycle(); 	
-				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+                }
+                  
 				break;
 			case '5_ModeChauffage':
 				$cmd = $eqlogic->ExecuteCmdPompe('Chauffage');
 				$info = $eqlogic->Update();
+                  
 				$info = $eqlogic->Lecture_Consigne(); 	
-				$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+                }  
+                  
 				$info = $eqlogic->Lecture_EntreeEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
-				$info = $eqlogic->Lecture_SortieEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+                }
+                  
+				$info = $eqlogic->Lecture_SortieEau(); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_Mode(); 	
-				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_Power(); 	
-				$eqlogic->checkAndUpdateCmd('2_Power', $info);
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('2_Power', $info);
+                }
+                  
             	$info = $eqlogic->LectureCycle(); 	
-				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+                }
+                  
 				break;
 			case '5_ModeAuto':
 				$cmd = $eqlogic->ExecuteCmdPompe('Auto');
 				$info = $eqlogic->Update();
+                  
 				$info = $eqlogic->Lecture_Consigne(); 	
-				$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_EntreeEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_SortieEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+                }
+                  
 				$info = $eqlogic->Lecture_Mode(); 	
-				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+                }  
+                  
 				$info = $eqlogic->Lecture_Power(); 	
-				$eqlogic->checkAndUpdateCmd('2_Power', $info);
-            	$info = $eqlogic->LectureCycle(); 	
-				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('2_Power', $info);
+                }
+                  
+            	$info = $eqlogic->LectureCycle(); 
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+                }
+                  
 				break;
 			case '6_SliderConsigne':
 				$info = $eqlogic->LectureSliderConsigne($_options['slider']/1);
@@ -982,22 +1114,35 @@ class PaC_HaywardCmd extends cmd {
 				$info = $eqlogic->Update();
 				
 				$info = $eqlogic->Lecture_Consigne(); 	//On lance la fonction randomVdm() pour récupérer une vdm et on la stocke dans la variable $info
-				$eqlogic->checkAndUpdateCmd('1_consigne', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic 
-				
+            	if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_consigne', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic 
+				}
+                  
 				$info = $eqlogic->Lecture_EntreeEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
-				
+            	if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+				}
+                  
 				$info = $eqlogic->Lecture_SortieEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
-				
+            	if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+				}
+                  
 				$info = $eqlogic->Lecture_Mode(); 	
-				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
-				
+            	if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+				}
+                  
 				$info = $eqlogic->Lecture_Power(); 	
-				$eqlogic->checkAndUpdateCmd('2_Power', $info); 
+            	if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('2_Power', $info); 
+                }
             
             	$info = $eqlogic->LectureCycle(); 	
-				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+            	if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+                }
+                  
 				break;
 			case '7_Debug':
 				//break;
@@ -1015,23 +1160,34 @@ class PaC_HaywardCmd extends cmd {
 				$info = $eqlogic->Update();
 				
 				$info = $eqlogic->Lecture_Consigne(); 	//On lance la fonction randomVdm() pour récupérer une vdm et on la stocke dans la variable $info
-				$eqlogic->checkAndUpdateCmd('1_consigne', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic 
-				
+				if ($info != -100) {            
+					$eqlogic->checkAndUpdateCmd('1_consigne', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic 
+				}
+            
 				$info = $eqlogic->Lecture_EntreeEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+            	if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_EntreeEau', $info); 
+                }
 				
 				$info = $eqlogic->Lecture_SortieEau(); 	
-				$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
-				
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
+				}
+                  
 				$info = $eqlogic->Lecture_Mode(); 	
-				$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
-				
+                if ($info != -100) {  
+					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+				}
+                  
 				$info = $eqlogic->Lecture_Power(); 	
-				$eqlogic->checkAndUpdateCmd('2_Power', $info); 
-            
+                if ($info != -100) {  
+					$eqlogic->checkAndUpdateCmd('2_Power', $info); 
+                }
+                  
             	$info = $eqlogic->LectureCycle(); 	
-				$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
-				
+                if ($info != -100) {
+					$eqlogic->checkAndUpdateCmd('8_EnCycle', $info);
+				}
 				
 				break;
 		}
