@@ -852,10 +852,10 @@ class PaC_HaywardCmd extends cmd {
 				$cmd = $eqlogic->ExecuteCmdPompe('Marche');
 				$info = $eqlogic->Update();
             
-				$info = $eqlogic->Lecture_Consigne(); 
-            	if ($info != -100) {
-					$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
-                }
+		//		$info = $eqlogic->Lecture_Consigne(); 
+        //    	if ($info != -100) {
+		//			$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+        //        }
             
 				$info = $eqlogic->Lecture_EntreeEau(); 	
                 if ($info != -100) {
@@ -887,10 +887,10 @@ class PaC_HaywardCmd extends cmd {
 				$cmd = $eqlogic->ExecuteCmdPompe('Arret');
 				$info = $eqlogic->Update();
                   
-				$info = $eqlogic->Lecture_Consigne(); 	
-                if ($info != -100) {  
-					$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
-                }
+		//		$info = $eqlogic->Lecture_Consigne(); 	
+         //       if ($info != -100) {  
+		//			$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+         //       }
                   
 				$info = $eqlogic->Lecture_EntreeEau(); 	
                 if ($info != -100) {
@@ -922,10 +922,10 @@ class PaC_HaywardCmd extends cmd {
 				$cmd = $eqlogic->ExecuteCmdPompe('Refroidissement');
 				$info = $eqlogic->Update();
                   
-				$info = $eqlogic->Lecture_Consigne(); 	
-                if ($info != -100) {
-					$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
-                }
+		//		$info = $eqlogic->Lecture_Consigne(); 	
+         //       if ($info != -100) {
+		//			$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+         //       }
                   
 				$info = $eqlogic->Lecture_EntreeEau(); 	
                 if ($info != -100) {
@@ -957,10 +957,10 @@ class PaC_HaywardCmd extends cmd {
 				$cmd = $eqlogic->ExecuteCmdPompe('Chauffage');
 				$info = $eqlogic->Update();
                   
-				$info = $eqlogic->Lecture_Consigne(); 	
-                if ($info != -100) {
-					$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
-                }  
+		//		$info = $eqlogic->Lecture_Consigne(); 	
+         //       if ($info != -100) {
+		//			$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+         //       }  
                   
 				$info = $eqlogic->Lecture_EntreeEau(); 	
                 if ($info != -100) {
@@ -992,10 +992,10 @@ class PaC_HaywardCmd extends cmd {
 				$cmd = $eqlogic->ExecuteCmdPompe('Auto');
 				$info = $eqlogic->Update();
                   
-				$info = $eqlogic->Lecture_Consigne(); 	
-                if ($info != -100) {
-					$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
-                }
+		//		$info = $eqlogic->Lecture_Consigne(); 	
+         //       if ($info != -100) {
+		//			$eqlogic->checkAndUpdateCmd('1_consigne', $info); 
+         //       }
                   
 				$info = $eqlogic->Lecture_EntreeEau(); 	
                 if ($info != -100) {
@@ -1085,10 +1085,10 @@ class PaC_HaywardCmd extends cmd {
 			case 'refresh': // LogicalId de la commande rafraîchir que l’on a créé dans la méthode Postsave de la classe vdm . 
 				$info = $eqlogic->Update();
 				
-				$info = $eqlogic->Lecture_Consigne(); 	//On lance la fonction randomVdm() pour récupérer une vdm et on la stocke dans la variable $info
-				if ($info != -100) {            
-					$eqlogic->checkAndUpdateCmd('1_consigne', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic 
-				}
+			//	$info = $eqlogic->Lecture_Consigne(); 	//On lance la fonction randomVdm() pour récupérer une vdm et on la stocke dans la variable $info
+			//	if ($info != -100) {            
+			//		$eqlogic->checkAndUpdateCmd('1_consigne', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic 
+			//	}
             
 				$info = $eqlogic->Lecture_EntreeEau(); 	
             	if ($info != -100) {
