@@ -143,111 +143,10 @@ public static function cron15() {
     /*     * *********************Méthodes d'instance************************* */
 
 
-Public function Update() {
-	try {
-		log::add('PaC_Hayward', 'debug','Function Update : Lancement');
-		
-		$TimeOutServeur=0 ;
-		gotoCom:
-		
-		$handle = @fopen("http://smartemp.hayward.fr:9000/", "r");
-		if ($handle) {
-			log::add('PaC_Hayward', 'debug','Function Update : Serveur hayward ok, téléchargement de la page web');
-			// ************* DEBUT DES VARIABLES
-			$username = $this->getConfiguration("Login"); 
-			$password = $this->getConfiguration("Password"); 
-			$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
-			$login_url = 'http://smartemp.hayward.fr:9000/login'; //url de la page d'accueil (identification)
-			//$cookie = 'PLAY_LANG=en'; //contenu du cookie
-			$source= 'http://smartemp.hayward.fr:9000/'; //page à récupérer
-			$pompe_html = '/var/www/html/pompeHayward.html'; //page créée
-			$x = "64";
-			$y = "20";
-			// ************* FIN DES VARIABLES
-
-			//initialisation curl
-			$ch = curl_init();
-		
-			//en-têtes http
-			$header[0] = "Host: http://smartemp.hayward.fr:9000";
-			$header[] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
-			$header[] = "Accept-Language: fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7"; 
-			$header[] = "Accept-Charset: utf-8";
-			$header[] = "Connection: keep-alive";
-			$header[] = "Keep-Alive: 300";
-			$header[] = "Pragma: no-cache";
-			$header[] = "Cache-control: max-age=0";
-			$header[] = "Origin: http://smartemp.hayward.fr:9000";
-			$header[] = "Upgrade-Insecure-Requests: 1";
-			$header[] = "Content-Type: application/x-www-form-urlencoded";
-			$header[] = "Accept-Encoding: gzip, deflate";
-			$header[] = "Referer: http://smartemp.hayward.fr:9000/login";
-			$header[] = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36";
-		
-			//défini l'url de connexion/identification
-			curl_setopt($ch, CURLOPT_URL, $login_url);
-			//active HTTP POST
-			curl_setopt($ch, CURLOPT_POST, 1);
-			//affecte les variables à envoyer et le clic sur le bouton de connexion
-			curl_setopt($ch, CURLOPT_POSTFIELDS, 'barCode='.$username.'&pwd='.$password.'&ImageButton1.x='.$x.'&ImageButton1.y='.$y);
-			
-			//défini les en-têtes http
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-			
-			// Définition de la méthode d'authentification du serveur
-			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY); 
-			
-			//gestion du cookie
-			//curl_setopt( $curl, CURLOPT_COOKIE, $cookie);
-			curl_setopt($ch, CURLOPT_COOKIEJAR, "/var/www/html/tmp/cookie"); //Le fichier dans lequel les cookies seront enregistrés
-			
-			//Setting CURLOPT_RETURNTRANSFER variable to 1 will force cURL
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			
-			//exécute la requête - login
-			$store = curl_exec($ch);
-			
-			curl_setopt($ch, CURLOPT_POST, 0);
-			curl_setopt($ch, CURLOPT_COOKIEFILE, "/var/www/html/tmp/cookie"); //Le fichier cookie à utiliser
-			curl_setopt($ch, CURLOPT_URL, $source);//la page à récupérer
-			//execute la requête
-			$content = curl_exec($ch);
-			
-			curl_close($ch); // on ferme la session curl
-			
-			log::add('PaC_Hayward', 'debug','Function Update : Téléchargement de la page web terminé');
-			
-			//Traduction
-			date_default_timezone_set('Europe/Paris');
-			$content = str_replace("Ambient", "Ambient - ".date('d m Y H:i'), $content);
-			$content = str_replace("Heating", "Chauffage", $content);
-			$content = str_replace("Cooling", "Froid", $content);
-			$content = str_replace('<input id="isPowerSwitch" type="checkbox" name="isPowerSwitch"  />', '<span class="Power">On</span>', $content);
-			$content = str_replace('<input id="isPowerSwitch" type="checkbox" name="isPowerSwitch" checked="checked" />', '<span class="Power">Off</span>', $content);
-			//$content = str_replace('â„ƒ', '', $content);
-			
-			//enregistre le contenu de la page dans un fichier html
-			//file_put_contents($pompe_html, $content);
-			file_put_contents($pompe_html, utf8_decode($content));
+Public function Update() {	
 	
-			//change les droits sur le fichier - écriture
-			chmod($pompe_html,0777);
-			
-			log::add('PaC_Hayward', 'debug','Function Update : Ok');
-			
-		} else {
-			
-			if ($TimeOutServeur < 3) {
-				log::add('PaC_Hayward', 'debug','Function Update : tentative de connection au serveur');
-				$TimeOutServeur++ ;
-				goto gotoCom;
-			}
-			log::add('PaC_Hayward', 'error','Function Update : Serveur hayward down');
-		}
 		
-	} catch (Exception $e) {
-		log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution de Update '  . ' ' . $e->getMessage()));
-	}		
+			
 }
 	
 	public function Lecture_Ambiante() {
@@ -274,73 +173,86 @@ Public function Update() {
 	}
   
 	public function Lecture_EntreeEau() {
-		log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : Lancement' );
-		//$url = "http://192.168.0.10/pompeHayward.html";
-		$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
-		$url = "http://".$MyIpJeedom."/pompeHayward.html"; 
-		$data = file_get_contents($url);
-        if ($data == false) {
-			log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : page vierge' );
-          	return -100;
-        }
-        else {
-        	$data = str_replace('?', '', $data);
-			@$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
-			$xpath = new DOMXPath($dom);
-			$divs = $xpath->query('//div[@class="pc"]//div[@class="kg1"]//span');
-			log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : Ok' );
-			return $divs[1]->nodeValue ;
-		}
+		try {
+			log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : Lancement' );	
+			$login = $this->getConfiguration("Login"); 
+			$password = $this->getConfiguration("Password"); 
 
+			$client = new SoapClient("http://www.phnixsmart.com/Phnix.WaterHeater.WebService/SmartDeviceService.asmx?wsdl");
+
+			$tomorrow = date("Y-m-d", time() + 86400);
+			$today = date('Y-m-d');
+			$result = $client->GetWHTemperatureHistoryData(array('barcode' => $login,'beginDate' => $today, 'endDate' => $tomorrow));
+			if (!empty($result->GetWHTemperatureHistoryDataResult->PackFullDataOf2Array)) {
+				$data = $result->GetWHTemperatureHistoryDataResult->PackFullDataOf2Array;
+				$json = json_decode($data);
+				$waterIn = $json[0]->WaterIn;
+				$waterOut = $json[0]->WaterOut;
+			} else {
+				$waterIn = -99 ;
+				log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : vierge' );
+			}
+
+			return $waterIn ;
+			log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : Ok' );
+	
+		} catch (Exception $e) {
+			log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_EntreeEau '  . ' ' . $e->getMessage()));
+		}		
 	}
 
 	public function Lecture_SortieEau() {
-		log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : Lancement' );
-		//$url = "http://192.168.0.10/pompeHayward.html";
-		$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
-		$url = "http://".$MyIpJeedom."/pompeHayward.html";
-		$data = file_get_contents($url);
-		$data = str_replace('?', '', $data);
-        if ($data == false) {
-			log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : page vierge' );
-          	return -100;
-        }
-        else {      
-			@$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
-			$xpath = new DOMXPath($dom);
-			$divs = $xpath->query('//div[@class="pc"]//div[@class="kg1"]//span');
-			log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : Ok' );
-			return $divs[2]->nodeValue ;
-        }
+		try {
+			log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : Lancement' );
+			$login = $this->getConfiguration("Login"); 
+			$password = $this->getConfiguration("Password"); 
+
+			$client = new SoapClient("http://www.phnixsmart.com/Phnix.WaterHeater.WebService/SmartDeviceService.asmx?wsdl");
+
+			$tomorrow = date("Y-m-d", time() + 86400);
+			$today = date('Y-m-d');
+			$result = $client->GetWHTemperatureHistoryData(array('barcode' => $login,'beginDate' => $today, 'endDate' => $tomorrow));
+			if (!empty($result->GetWHTemperatureHistoryDataResult->PackFullDataOf2Array)) {
+				$data = $result->GetWHTemperatureHistoryDataResult->PackFullDataOf2Array;
+				$json = json_decode($data);
+				$waterIn = $json[0]->WaterIn;
+				$waterOut = $json[0]->WaterOut;
+			} else {
+				$waterOut = -99 ;
+				log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : vierge' );
+			}
+
+			return $waterOut ;
+			log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : Ok' );		
+
+		} catch (Exception $e) {
+			log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_SortieEau '  . ' ' . $e->getMessage()));
+		}			
 	}
 	
 	public function Lecture_Consigne() {
-		log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : Lancement' );
-		//$url = "http://192.168.0.10/pompeHayward.html";
-		$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
-		$url = "http://".$MyIpJeedom."/pompeHayward.html";
-		$data = file_get_contents($url);
-        if ($data == false) {
-			log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : page vierge' );
-          	return -100;
-        }
-        else {      
-			$data = str_replace('?', '', $data);
-			@$dom = new DOMDocument();
-			libxml_use_internal_errors(true);
-			$dom->loadHTML($data);
-			libxml_use_internal_errors(false);
-			$xpath = new DOMXPath($dom);
-			$divs = $xpath->query('//div[@class="pc"]//div[@class="kg"]//span');
-			log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : Ok' );
-			return $divs[1]->nodeValue ;
-        }
+		try {
+			log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : Lancement' );
+		
+		
+		
+		
+		
+		
+		} catch (Exception $e) {
+			log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_Consigne '  . ' ' . $e->getMessage()));
+		}	
+	}
+	
+		public function Lecture_Consigne2($value) {
+		try {
+			log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : Lancement' );
+		
+		return $value;
+		
+		} catch (Exception $e) {
+			log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_Consigne2 '  . ' ' . $e->getMessage()));
+		}	
 	}
 	
 	public function LectureSliderConsigne($valueSlider) {
@@ -426,141 +338,99 @@ Public function Update() {
 public function ExecuteCmdPompe($VarPilotagePompe) {
 	try {
 		log::add('PaC_Hayward', 'debug','Function ExecuteCmdPompe : Lancement' );
-		$handle = @fopen("http://smartemp.hayward.fr:9000/", "r");
-		if ($handle) {
-			log::add('PaC_Hayward', 'debug','Function ExecuteCmdPompe : Serveur hayward ok' );
-			// ************* DEBUT DES VARIABLES
-			$username = $this->getConfiguration("Login"); 
-			$password = $this->getConfiguration("Password"); 
-			$MyIpJeedom = $this->getConfiguration("MyIpJeedom");
-			$login_url = 'http://smartemp.hayward.fr:9000/login'; //url de la page d'accueil (identification)
-			//$cookie = 'PLAY_LANG=en'; //contenu du cookie
-			$source= 'http://smartemp.hayward.fr:9000'; //page à récupérer
-			// ************* FIN DES VARIABLES
-			
-			//initialisation curl
-			$ch = curl_init();
-			
-			//en-têtes http
-			$header[0] = "Host: http://smartemp.hayward.fr:9000";
-			$header[] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
-			$header[] = "Accept-Language: fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7"; 
-			$header[] = "Accept-Charset: utf-8";
-			$header[] = "Connection: keep-alive";
-			$header[] = "Keep-Alive: 300";
-			$header[] = "Pragma: no-cache";
-			$header[] = "Cache-control: max-age=0";
-			$header[] = "Origin: http://smartemp.hayward.fr:9000";
-			$header[] = "Upgrade-Insecure-Requests: 1";
-			$header[] = "Content-Type: application/x-www-form-urlencoded";
-			$header[] = "Accept-Encoding: gzip, deflate";
-			$header[] = "Referer: http://smartemp.hayward.fr:9000/login";
-			$header[] = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36";
-			
-			//défini l'url de connexion/identification
-			curl_setopt($ch, CURLOPT_URL, $login_url);
-			//active HTTP POST
-			curl_setopt($ch, CURLOPT_POST, 1);
-			//affecte les variables à envoyer et le clic sur le bouton de connexion
-			curl_setopt($ch, CURLOPT_POSTFIELDS, 'barCode='.$username.'&pwd='.$password.'&ImageButton1.x='.$x.'&ImageButton1.y='.$y);
-			
-			//défini les en-têtes http
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-			
-			// Définition de la méthode d'authentification du serveur
-			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY); 
-			
-			//gestion du cookie
-			curl_setopt($ch, CURLOPT_COOKIEJAR, "/var/www/html/tmp/cookie"); //Le fichier dans lequel les cookies seront enregistrés
-			
-			//Setting CURLOPT_RETURNTRANSFER variable to 1 will force cURL
-			//not to print out the results of its query.
-			//Instead, it will return the results as a string return value
-			//from curl_exec() instead of the usual true/false.
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			
-			//exécute la requête - login
-			$store = curl_exec($ch);
-			
-			//Mise en marche de la pompe
-			if ($VarPilotagePompe == 'Marche') {
-				curl_setopt($ch, CURLOPT_URL, 'http://smartemp.hayward.fr:9000/power');
-				//affecte les variables à envoyer et le clic sur le bouton de connexion
-				curl_setopt($ch, CURLOPT_POSTFIELDS, 'power=true');
-			} elseif ($VarPilotagePompe == 'Arret') {
-				curl_setopt($ch, CURLOPT_URL, 'http://smartemp.hayward.fr:9000/power');
-				//affecte les variables à envoyer et le clic sur le bouton de connexion
-				curl_setopt($ch, CURLOPT_POSTFIELDS, 'power=false');
+		
+		$login = $this->getConfiguration("Login"); 
+		$password = $this->getConfiguration("Password"); 
+		$setpoint = $this->Lecture_Consigne();	
+		//$power = 'ON';
+
+		//Mise en marche de la pompe
+		if ($VarPilotagePompe == 'Marche') {		
+				switch ($setpoint) {
+					case 25:
+						$setpoint = 'qlqxgwEAL6gACEABAQZ8bnR8THxafEw9PQAAAAAAAAAA5BU=';
+						break;
+					case 26:
+						$setpoint = 'qlqxgwEAL6gACEABAQZ8cHR8THxafEw9PQACAAAAAAAAofs=';
+						break;
+					case 27:
+						$setpoint = 'qlqxgwEAL6gACEABAQZ8cnR8THxafEw9PQAAAAAAAAAAI4M=';
+						break;
+					case 28:
+						$setpoint = 'qlqxgwEAL6gACEABAQZ8dHR8THxafEw9PQACAAAAAAAA4Mo';
+						break;
+					Case 29:
+						$setpoint = 'qlqxgwEAL6gACEABAQZ8dnR8THxafEw9PQACAAAAAAAAQXI=';
+						break;
+					case 30:
+						$setpoint = 'qlqxgwEAL6gACEABAQZ8eHR8THxafEw9PQAAAAAAAAAAAFk=';
+						break;
+					case 31:
+						$setpoint = 'qlqxgwEAL6gACEABAQZ8enR8THxafEw9PQACAAAAAAAAgiE=';
+						break;
+					case 32:
+						$setpoint = 'qlqxgwEAL6gACEABAQZ8fHR8THxafEw9PQACAAAAAAAAYqg=';
+						break;
+					}
+
+			} elseif ($VarPilotagePompe == 'Arret') {		
+				switch ($setpoint) {
+					case 25:
+						$setpoint = 'qlqxgwEAL6gACEAAAQZybnR8THxafEw9PQACAAAAAAAAffA=';
+						break;
+					case 26:
+						$setpoint = 'qlqxgwEAL6gACEAAAQZycHR8THxafEw9PQAAAAAAAAAAOB4=';
+						break;
+					case 27:
+						$setpoint = 'qlqxgwEAL6gACEAAAQZycnR8THxafEw9PQACAAAAAAAAumY=';
+						break;
+					case 28:
+						$setpoint = 'qlqxgwEAL6gACEAAAQZydHR8THxafEw9PQACAAAAAAAAWu8';
+						break;
+					case 29:
+						$setpoint = 'qlqxgwEAL6gACEAAAQZ8dnR8THxafEw9PQACAAAAAAAAkb4=';
+						break;
+					case 30:
+						$setpoint = 'qlqxgwEAL6gACEAAAQZ8eHR8THxafEw9PQAAAAAAAAAA0JU=';
+						break;
+					case 31:
+						$setpoint = 'qlqxgwEAL6gACEAAAQZ8e3R8THxafEw9PQACAAAAAAAAAxE=';
+						break;
+					case 32:
+						$setpoint = 'qlqxgwEAL6gACEAAAQZ8fHR8THxafEw9PQAAAAAAAAAAkaQ=';
+						break;
+				}
+	
 			} elseif ($VarPilotagePompe == 'Refroidissement') {
 				//Affectation mode pompe
-				curl_setopt($ch, CURLOPT_URL, 'http://smartemp.hayward.fr:9000/internal/setmode');
-				//affecte les variables à envoyer et le clic sur le bouton de connexion
-				curl_setopt($ch, CURLOPT_POSTFIELDS, 'mode=0'); //0=refroidissement 1=Chauffage 2=Auto	
+
 			} elseif ($VarPilotagePompe == 'Chauffage') {
 				//Affectation mode pompe
-				curl_setopt($ch, CURLOPT_URL, 'http://smartemp.hayward.fr:9000/internal/setmode');
-				//affecte les variables à envoyer et le clic sur le bouton de connexion
-				curl_setopt($ch, CURLOPT_POSTFIELDS, 'mode=1'); //0=refroidissement 1=Chauffage 2=Auto	
+
 			} elseif ($VarPilotagePompe == 'Auto') {
 				//Affectation mode pompe
-				curl_setopt($ch, CURLOPT_URL, 'http://smartemp.hayward.fr:9000/internal/setmode');
-				//affecte les variables à envoyer et le clic sur le bouton de connexion
-				curl_setopt($ch, CURLOPT_POSTFIELDS, 'mode=2'); //0=refroidissement 1=Chauffage 2=Auto	
+
 			} elseif ($VarPilotagePompe == 'AutorisationOn') {
 				//Autorisation
-				curl_setopt($ch, CURLOPT_URL, 'http://smartemp.hayward.fr:9000/control');
-				//affecte les variables à envoyer et le clic sur le bouton de connexion
-				curl_setopt($ch, CURLOPT_POSTFIELDS, 'control=true'); 
+
 			} elseif ($VarPilotagePompe == 'AutorisationOff') {
 				//Autorisation
-				curl_setopt($ch, CURLOPT_URL, 'http://smartemp.hayward.fr:9000/control');
-				//affecte les variables à envoyer et le clic sur le bouton de connexion
-				curl_setopt($ch, CURLOPT_POSTFIELDS, 'control=false'); 		
+	
 			} elseif ($VarPilotagePompe == 'TimerTime') {
 				//Timer pompe
-				curl_setopt($ch, CURLOPT_URL, 'http://smartemp.hayward.fr:9000/internal/timer');
-				//affecte les variables à envoyer et le clic sur le bouton de connexion
-				//Envoi de toutes les valeurs seulement
-				$timerOneOnMin = $this->getConfiguration("Timer1MinDep"); 
-				$timerOneOnHour = $this->getConfiguration("Timer1HourDep"); 
-				$timerOneOffMin = $this->getConfiguration("Timer1MinFin"); 
-				$timerOneOffHour = $this->getConfiguration("Timer1HourFin"); 
-				$timerTwoOnMin = $this->getConfiguration("Timer2MinDep"); 
-				$timerTwoOnHour = $this->getConfiguration("Timer2HourDep"); 
-				$timerTwoOffMin = $this->getConfiguration("Timer2MinFin"); 
-				$timerTwoOffHour = $this->getConfiguration("Timer2HourFin"); 
-				$Timer1OnDep = $this->getConfiguration("Timer1OnDep");
-				$Timer1OnFin = $this->getConfiguration("Timer1OnFin");		
-				$Timer2OnDep = $this->getConfiguration("Timer2OnDep");
-				$Timer2OnFin = $this->getConfiguration("Timer2OnFin");			
-				$resultatTimer = 'timerOneOnMin='.$timerOneOnMin.'&timerOneOnHour='.$timerOneOnHour.'&timerOneOn='.$Timer1OnDep
-								.'&timerOneOffMin='.$timerOneOffMin.'&timerOneOffHour='.$timerOneOffHour.'&timerOneOff='.$Timer1OnFin
-								.'&timerTwoOnMin='.$timerTwoOnMin.'&timerTwoOnHour='.$timerTwoOnHour.'&timerTwoOn='.$Timer2OnDep
-								.'&timerTwoOffMin='.$timerTwoOffMin.'&timerTwoOffHour='.$timerTwoOffHour.'&timerTwoOff='.$Timer2OnFin ;
-												
-				curl_setopt($ch, CURLOPT_POSTFIELDS,$resultatTimer);
 				
-				//curl_setopt($ch, CURLOPT_POSTFIELDS,'timerOneOnMin='.$timerOneOnMin.'&timerOneOnHour='.$timerOneOnHour.'&timerOneOn=0'
-				//								   .'&timerOneOffMin='.$timerOneOffMin.'&timerOneOffHour='.$timerOneOffHour.'&timerOneOff=0'
-				//								   .'&timerTwoOnMin='.$timerTwoOnMin.'&timerTwoOnHour='.$timerTwoOnHour.'&timerTwoOn=0'
-				//								   .'&timerTwoOffMin='.$timerTwoOffMin.'&timerTwoOffHour='.$timerTwoOffHour.'&timerTwoOff=0');
-				
-				//Envoi du timer 1 pour l'activer ou pas
-				//curl_setopt($ch, CURLOPT_POSTFIELDS, 'timerOneOnMin=01'.'&timerOneOnHour=11'.'&timerOneOn=1'.'&timerOneOffMin=02'.'&timerOneOffHour=09'.'&timerOneOff=1'.'&timerTwoOnMin=12'.'&timerTwoOnHour=03'.'&timerTwoOffMin=13'.'&timerTwoOffHour=04');
-				//Envoi du timer 2 pour l'activer ou pas
-				//curl_setopt($ch, CURLOPT_POSTFIELDS, 'timerOneOnMin=01'.'&timerOneOnHour=11'.'&timerOneOffMin=02'.'&timerOneOffHour=09'.'&timerTwoOnMin=12'.'&timerTwoOnHour=03'.'&timerTwoOn=1'.'&timerTwoOffMin=13'.'&timerTwoOffHour=04'.'&timerTwoOff=1');
-				//Envoi de toute la config du timer
-				//curl_setopt($ch, CURLOPT_POSTFIELDS, 'timerOneOnMin=00'.'&timerOneOnHour=00'.'&timerOneOn=1'.'&timerOneOffMin=00'.'&timerOneOffHour=00'.'&timerOneOff=1'.'&timerTwoOnMin=00'.'&timerTwoOnHour=00'.'&timerTwoOn=1'.'&timerTwoOffMin=00'.'&timerTwoOffHour=00'.'&timerTwoOff=1');
 			} 
 			
-			$store = curl_exec($ch);
-			curl_close($ch); // on ferme la session curl
-			
-			log::add('PaC_Hayward', 'debug','Function ExecuteCmdPompe : Ok' );
-			
-			
+
+		$setpoint = base64_decode($setpoint);
+		$client = new SoapClient("http://www.phnixsmart.com/Phnix.WaterHeater.WebService/SmartDeviceService.asmx?wsdl");
+		$result = $client->SavePackageData(array('company' => 'PHNIX','barcode' => $login, 'pw' => $password, 'requestPackData' => $setpoint));
+
+		if (!empty($result->SavePackageDataResult->ResponseCode)) {
+			$data = $result->SavePackageDataResult->ResponseCode;
+			log::add('PaC_Hayward', 'debug','Function ExecuteCmdSetConsigne : Ok' );
 		} else {
-			log::add('PaC_Hayward', 'error','Function ExecuteCmdPompe : Serveur hayward down' );
+			log::add('PaC_Hayward', 'error','Function ExecuteCmdSetConsigne : Serveur hayward down' );
 		}
 		
 	} catch (Exception $e) {
@@ -569,84 +439,83 @@ public function ExecuteCmdPompe($VarPilotagePompe) {
 }
 
 public function ExecuteCmdSetConsigne($VarConsigne) {
-	try {
-		log::add('PaC_Hayward', 'debug','Function ExecuteCmdSetConsigne : Lancement' );
-		$handle = @fopen("http://smartemp.hayward.fr:9000/", "r");
-		if ($handle) {
-			log::add('PaC_Hayward', 'debug','Function ExecuteCmdSetConsigne : Serveur hayward ok' );
-			// ************* DEBUT DES VARIABLES
-			$username = $this->getConfiguration("Login"); 
-			$password = $this->getConfiguration("Password"); 
-			$MyIpJeedom = $this->getConfiguration("MyIpJeedom");
-			$login_url = 'http://smartemp.hayward.fr:9000/login'; //url de la page d'accueil (identification)
-			//$cookie = 'PLAY_LANG=en'; //contenu du cookie
-			$source= 'http://smartemp.hayward.fr:9000'; //page à récupérer
-			// ************* FIN DES VARIABLES
-			
-			//initialisation curl
-			$ch = curl_init();
-			
-			//en-têtes http
-			$header[0] = "Host: http://smartemp.hayward.fr:9000";
-			$header[] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
-			$header[] = "Accept-Language: fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7"; 
-			$header[] = "Accept-Charset: utf-8";
-			$header[] = "Connection: keep-alive";
-			$header[] = "Keep-Alive: 300";
-			$header[] = "Pragma: no-cache";
-			$header[] = "Cache-control: max-age=0";
-			$header[] = "Origin: http://smartemp.hayward.fr:9000";
-			$header[] = "Upgrade-Insecure-Requests: 1";
-			$header[] = "Content-Type: application/x-www-form-urlencoded";
-			$header[] = "Accept-Encoding: gzip, deflate";
-			$header[] = "Referer: http://smartemp.hayward.fr:9000/login";
-			$header[] = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.109 Safari/537.36";
-			
-			//défini l'url de connexion/identification
-			curl_setopt($ch, CURLOPT_URL, $login_url);
-			//active HTTP POST
-			curl_setopt($ch, CURLOPT_POST, 1);
-			//affecte les variables à envoyer et le clic sur le bouton de connexion
-			curl_setopt($ch, CURLOPT_POSTFIELDS, 'barCode='.$username.'&pwd='.$password.'&ImageButton1.x='.$x.'&ImageButton1.y='.$y);
-			
-			//défini les en-têtes http
-			curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-			
-			// Définition de la méthode d'authentification du serveur
-			curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY); 
-			
-			//gestion du cookie
-			curl_setopt($ch, CURLOPT_COOKIEJAR, "/var/www/html/tmp/cookie"); //Le fichier dans lequel les cookies seront enregistrés
-			
-			//Setting CURLOPT_RETURNTRANSFER variable to 1 will force cURL
-			//not to print out the results of its query.
-			//Instead, it will return the results as a string return value
-			//from curl_exec() instead of the usual true/false.
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			
-			//exécute la requête - login
-			$store = curl_exec($ch);
 	
-			//Affectation consigne pompe
-			$target = $VarConsigne; 
-			$target=($target*1.8)+32; //Conversion en F°
-			curl_setopt($ch, CURLOPT_URL, 'http://smartemp.hayward.fr:9000/internal/settarget');
-			//affecte les variables à envoyer et le clic sur le bouton de connexion
-			curl_setopt($ch, CURLOPT_POSTFIELDS, 'target='.$target);
-			$store = curl_exec($ch);
-	
-			curl_close($ch); // on ferme la session curl
-			
-			log::add('PaC_Hayward', 'debug','Function ExecuteCmdSetConsigne : Ok' );
-			
-		} else {
-			log::add('PaC_Hayward', 'error','Function ExecuteCmdSetConsigne : Serveur hayward down' );
-		}
-		
-	} catch (Exception $e) {
-		log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution de ExecuteCmdSetConsigne '  . ' ' . $e->getMessage()));
-	}	
+	log::add('PaC_Hayward', 'debug','Function ExecuteCmdSetConsigne : Lancement' );
+	$login = $this->getConfiguration("Login"); 
+	$password = $this->getConfiguration("Password"); 
+	$setpoint = $VarConsigne; 
+	$power = 'ON';
+
+if ($power == 'ON') {
+  	switch ($setpoint) {
+    	case 25:
+        	$setpoint = 'qlqxgwEAL6gACEABAQZ8bnR8THxafEw9PQAAAAAAAAAA5BU=';
+        	break;
+    	case 26:
+        	$setpoint = 'qlqxgwEAL6gACEABAQZ8cHR8THxafEw9PQACAAAAAAAAofs=';
+        	break;
+    	case 27:
+        	$setpoint = 'qlqxgwEAL6gACEABAQZ8cnR8THxafEw9PQAAAAAAAAAAI4M=';
+        	break;
+      	case 28:
+        	$setpoint = 'qlqxgwEAL6gACEABAQZ8dHR8THxafEw9PQACAAAAAAAA4Mo';
+        	break;
+        case 29:
+        	$setpoint = 'qlqxgwEAL6gACEABAQZ8dnR8THxafEw9PQACAAAAAAAAQXI=';
+        	break;
+        case 30:
+        	$setpoint = 'qlqxgwEAL6gACEABAQZ8eHR8THxafEw9PQAAAAAAAAAAAFk=';
+        	break;
+        case 31:
+        	$setpoint = 'qlqxgwEAL6gACEABAQZ8enR8THxafEw9PQACAAAAAAAAgiE=';
+        	break;
+        case 32:
+        	$setpoint = 'qlqxgwEAL6gACEABAQZ8fHR8THxafEw9PQACAAAAAAAAYqg=';
+        	break;
+	}
+} else {
+  	switch ($setpoint) {
+    	case 25:
+        	$setpoint = 'qlqxgwEAL6gACEAAAQZybnR8THxafEw9PQACAAAAAAAAffA=';
+        	break;
+    	case 26:
+        	$setpoint = 'qlqxgwEAL6gACEAAAQZycHR8THxafEw9PQAAAAAAAAAAOB4=';
+        	break;
+    	case 27:
+        	$setpoint = 'qlqxgwEAL6gACEAAAQZycnR8THxafEw9PQACAAAAAAAAumY=';
+        	break;
+      	case 28:
+        	$setpoint = 'qlqxgwEAL6gACEAAAQZydHR8THxafEw9PQACAAAAAAAAWu8';
+        	break;
+        case 29:
+        	$setpoint = 'qlqxgwEAL6gACEAAAQZ8dnR8THxafEw9PQACAAAAAAAAkb4=';
+        	break;
+        case 30:
+        	$setpoint = 'qlqxgwEAL6gACEAAAQZ8eHR8THxafEw9PQAAAAAAAAAA0JU=';
+        	break;
+        case 31:
+        	$setpoint = 'qlqxgwEAL6gACEAAAQZ8e3R8THxafEw9PQACAAAAAAAAAxE=';
+        	break;
+        case 32:
+        	$setpoint = 'qlqxgwEAL6gACEAAAQZ8fHR8THxafEw9PQAAAAAAAAAAkaQ=';
+        	break;
+	}
 }
+
+	$setpoint = base64_decode($setpoint);
+	$client = new SoapClient("http://www.phnixsmart.com/Phnix.WaterHeater.WebService/SmartDeviceService.asmx?wsdl");
+	$result = $client->SavePackageData(array('company' => 'PHNIX','barcode' => $login, 'pw' => $password, 'requestPackData' => $setpoint));
+
+	if (!empty($result->SavePackageDataResult->ResponseCode)) {
+		$data = $result->SavePackageDataResult->ResponseCode;
+		log::add('PaC_Hayward', 'debug','Function ExecuteCmdSetConsigne : Ok' );
+	} else {
+		log::add('PaC_Hayward', 'error','Function ExecuteCmdSetConsigne : Serveur hayward down' );
+	}
+
+
+}
+
 	// Méthode appellée avant la création de votre objet
     public function preInsert() {
         
@@ -1165,7 +1034,12 @@ class PaC_HaywardCmd extends cmd {
 				
 				$info = $eqlogic->Update();
 				
-				$info = $eqlogic->Lecture_Consigne(); 	//On lance la fonction randomVdm() pour récupérer une vdm et on la stocke dans la variable $info
+//				$info = $eqlogic->Lecture_Consigne(); 	//On lance la fonction randomVdm() pour récupérer une vdm et on la stocke dans la variable $info
+//            	if ($info != -100) {
+//					$eqlogic->checkAndUpdateCmd('1_consigne', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic 
+//				}
+				
+				$info = $eqlogic->Lecture_Consigne2($value); 	//On lance la fonction randomVdm() pour récupérer une vdm et on la stocke dans la variable $info
             	if ($info != -100) {
 					$eqlogic->checkAndUpdateCmd('1_consigne', $info); // on met à jour la commande avec le LogicalId "story"  de l'eqlogic 
 				}
