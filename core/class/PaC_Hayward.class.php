@@ -44,9 +44,6 @@ class PaC_Hayward extends eqLogic {
 public static function cron5() {
 	try {
 		log::add('PaC_Hayward', 'debug','Function cron5 : Lancement');
-		//$handle = @fopen("http://smartemp.hayward.fr:9000/", "r");
-		//if ($handle) {
-		//	log::add('PaC_Hayward', 'debug','Function cron5 : Serveur hayward ok' );
 			foreach (self::byType('PaC_Hayward') as $PaC_Hayward) {//parcours tous les équipements du plugin vdm
 				if ($PaC_Hayward->getIsEnable() == 1) {//vérifie que l'équipement est actif
 					$cmd = $PaC_Hayward->getCmd(null, 'refresh');//retourne la commande "refresh si elle exxiste
@@ -56,11 +53,7 @@ public static function cron5() {
 					$cmd->execCmd(); // la commande existe on la lance
 					log::add('PaC_Hayward', 'debug','Function cron5 : Ok');
 				}
-			}
-		//} else {
-		//	log::add('PaC_Hayward', 'error','Function cron5 : Serveur hayward down' );
-		//}
-		  
+			}	  
 	} catch (Exception $e) {
 		//log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron5 '  . ' ' . $e->getMessage()));
 		log::add('PaC_Hayward', 'error', 'Erreur lors de l\'éxecution du cron5  ' . $e->getMessage() );
@@ -71,9 +64,6 @@ public static function cron5() {
 public static function cron10() {
 	try {
 		log::add('PaC_Hayward', 'debug','Function cron10 : Lancement');
-		//$handle = @fopen("http://smartemp.hayward.fr:9000/", "r");
-		//if ($handle) {
-		//	log::add('PaC_Hayward', 'debug','Function cron10 : Serveur hayward ok' );
 			foreach (self::byType('PaC_Hayward') as $PaC_Hayward) {//parcours tous les équipements du plugin vdm
 				if ($PaC_Hayward->getIsEnable() == 1) {//vérifie que l'équipement est actif
 					$cmd = $PaC_Hayward->getCmd(null, 'refresh');//retourne la commande "refresh si elle exxiste
@@ -83,11 +73,7 @@ public static function cron10() {
 					$cmd->execCmd(); // la commande existe on la lance
 					log::add('PaC_Hayward', 'debug','Function cron10 : Ok');
 				}
-			}
-		//} else {
-		//	log::add('PaC_Hayward', 'error','Function cron10 : Serveur hayward down' );
-		//}
-		  
+			}	  
 	} catch (Exception $e) {
 		//log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron10 '  . ' ' . $e->getMessage()));
 		log::add('PaC_Hayward', 'error', 'Erreur lors de l\'éxecution du cron10  ' . $e->getMessage() );
@@ -98,9 +84,6 @@ public static function cron10() {
 public static function cron15() {
 	try {
 		log::add('PaC_Hayward', 'debug','Function cron15 : Lancement');
-		//$handle = @fopen("http://smartemp.hayward.fr:9000/", "r");
-		//if ($handle) {
-		//	log::add('PaC_Hayward', 'debug','Function cron15 : Serveur hayward ok' );
 			foreach (self::byType('PaC_Hayward') as $PaC_Hayward) {//parcours tous les équipements du plugin vdm
 				if ($PaC_Hayward->getIsEnable() == 1) {//vérifie que l'équipement est actif
 					$cmd = $PaC_Hayward->getCmd(null, 'refresh');//retourne la commande "refresh si elle exxiste
@@ -110,11 +93,7 @@ public static function cron15() {
 					$cmd->execCmd(); // la commande existe on la lance
 					log::add('PaC_Hayward', 'debug','Function cron15 : Ok');
 				}
-			}
-		//} else {
-		//	log::add('PaC_Hayward', 'error','Function cron15 : Serveur hayward down' );
-		//}
-		  
+			}	  
 	} catch (Exception $e) {
 		//log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron15 '  . ' ' . $e->getMessage()));
 		log::add('PaC_Hayward', 'error', 'Erreur lors de l\'éxecution du cron15  ' . $e->getMessage() );
@@ -153,6 +132,7 @@ Public function Update() {
 }
 	
 	public function Lecture_Ambiante() {
+	/*
 		log::add('PaC_Hayward', 'debug','Function Lecture_Ambiante : Lancement' );
 		//$url = "http://192.168.0.10/pompeHayward.html";
 		$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
@@ -173,6 +153,8 @@ Public function Update() {
 			log::add('PaC_Hayward', 'debug','Function Lecture_Ambiante : Ok' );
 			return $divs[0]->nodeValue ;
         }
+
+	*/			
 	}
   
 	public function Lecture_EntreeEau() {
@@ -196,8 +178,8 @@ Public function Update() {
 				log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : vierge' );
 			}
 
-			return $waterIn ;
 			log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : Ok' );
+			return $waterIn ;
 	
 		} catch (Exception $e) {
 			//log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_EntreeEau '  . ' ' . $e->getMessage()));
@@ -227,8 +209,8 @@ Public function Update() {
 				log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : vierge' );
 			}
 
-			return $waterOut ;
-			log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : Ok' );		
+			log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : Ok' );
+			return $waterOut ;		
 
 		} catch (Exception $e) {
 			//log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_SortieEau '  . ' ' . $e->getMessage()));
@@ -238,12 +220,7 @@ Public function Update() {
 	
 	public function Lecture_Consigne() {
 		try {
-			log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : Lancement' );
-		
-		
-		
-		
-		
+			//log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : Lancement' );
 		
 		} catch (Exception $e) {
 			//log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_Consigne '  . ' ' . $e->getMessage()));
@@ -253,9 +230,8 @@ Public function Update() {
 	
 		public function Lecture_Consigne2($value) {
 		try {
-			log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : Lancement' );
-		
-		return $value;
+			log::add('PaC_Hayward', 'debug','Function Lecture_Consigne : Lancement/Ok' );
+			return $value;
 		
 		} catch (Exception $e) {
 			//log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_Consigne2 '  . ' ' . $e->getMessage()));
@@ -269,6 +245,7 @@ Public function Update() {
 	}
 
 	public function Lecture_Mode() {
+	/*
 		log::add('PaC_Hayward', 'debug','Function Lecture_Mode : Lancement' );
 		//$url = "http://192.168.0.10/pompeHayward.html";
 		$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
@@ -288,9 +265,12 @@ Public function Update() {
 			log::add('PaC_Hayward', 'debug','Function Lecture_Mode : Ok' );
 			return $divs[0]->nodeValue ;
         }
-	}
+		
+	*/
+		}
 	
 	public function Lecture_Power() {
+		/*
 		log::add('PaC_Hayward', 'debug','Function Lecture_Power : Lancement' );
 		//$url = "http://192.168.0.10/pompeHayward.html";
 		$MyIpJeedom = $this->getConfiguration("MyIpJeedom"); 
@@ -310,7 +290,9 @@ Public function Update() {
 			log::add('PaC_Hayward', 'debug','Function Lecture_Power : Ok' );
 			return $divs[15]->nodeValue ;
         }
-	}
+
+	*/
+		}
   
 	public function LectureCycle() {
       	$EntreeEau = $this->Lecture_EntreeEau();
