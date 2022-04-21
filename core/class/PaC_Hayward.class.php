@@ -62,7 +62,8 @@ public static function cron5() {
 		//}
 		  
 	} catch (Exception $e) {
-		log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron5 '  . ' ' . $e->getMessage()));
+		//log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron5 '  . ' ' . $e->getMessage()));
+		log::add('PaC_Hayward', 'error', 'Erreur lors de l\'éxecution du cron5  ' . $e->getMessage() );
 	}	
 }
 	
@@ -88,7 +89,8 @@ public static function cron10() {
 		//}
 		  
 	} catch (Exception $e) {
-		log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron10 '  . ' ' . $e->getMessage()));
+		//log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron10 '  . ' ' . $e->getMessage()));
+		log::add('PaC_Hayward', 'error', 'Erreur lors de l\'éxecution du cron10  ' . $e->getMessage() );
 	}	
 }
 	
@@ -114,7 +116,8 @@ public static function cron15() {
 		//}
 		  
 	} catch (Exception $e) {
-		log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron15 '  . ' ' . $e->getMessage()));
+		//log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution du cron15 '  . ' ' . $e->getMessage()));
+		log::add('PaC_Hayward', 'error', 'Erreur lors de l\'éxecution du cron15  ' . $e->getMessage() );
 	}	
 }	
 
@@ -197,7 +200,9 @@ Public function Update() {
 			log::add('PaC_Hayward', 'debug','Function Lecture_EntreeEau : Ok' );
 	
 		} catch (Exception $e) {
-			log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_EntreeEau '  . ' ' . $e->getMessage()));
+			//log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_EntreeEau '  . ' ' . $e->getMessage()));
+			log::add('PaC_Hayward', 'error', 'Erreur Function Lecture_EntreeEau ' . $e->getMessage() );
+			
 		}		
 	}
 
@@ -226,7 +231,8 @@ Public function Update() {
 			log::add('PaC_Hayward', 'debug','Function Lecture_SortieEau : Ok' );		
 
 		} catch (Exception $e) {
-			log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_SortieEau '  . ' ' . $e->getMessage()));
+			//log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_SortieEau '  . ' ' . $e->getMessage()));
+			log::add('PaC_Hayward', 'error', 'Erreur Function Lecture_SortieEau ' . $e->getMessage() );
 		}			
 	}
 	
@@ -240,7 +246,8 @@ Public function Update() {
 		
 		
 		} catch (Exception $e) {
-			log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_Consigne '  . ' ' . $e->getMessage()));
+			//log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_Consigne '  . ' ' . $e->getMessage()));
+			log::add('PaC_Hayward', 'error', 'Erreur Function Lecture_Consigne ' . $e->getMessage() );
 		}	
 	}
 	
@@ -251,7 +258,8 @@ Public function Update() {
 		return $value;
 		
 		} catch (Exception $e) {
-			log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_Consigne2 '  . ' ' . $e->getMessage()));
+			//log::add('PaC_Hayward', 'error', __('Erreur Function Lecture_Consigne2 '  . ' ' . $e->getMessage()));
+			log::add('PaC_Hayward', 'error', 'Erreur Function Lecture_Consigne2 ' . $e->getMessage() );
 		}	
 	}
 	
@@ -434,7 +442,8 @@ public function ExecuteCmdPompe($VarPilotagePompe) {
 		}
 		
 	} catch (Exception $e) {
-		log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution de ExecuteCmdPompe '  . ' ' . $e->getMessage()));
+		//log::add('PaC_Hayward', 'error', __('Erreur lors de l\'éxecution de ExecuteCmdPompe '  . ' ' . $e->getMessage()));
+		log::add('PaC_Hayward', 'error', 'Erreur lors de l\'éxecution de ExecuteCmdPompe ' . $e->getMessage() );
 	}	
 }
 
