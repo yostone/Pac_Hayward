@@ -314,7 +314,7 @@ Public function Update() {
 		$Power = $this->Lecture_Power();		
 		$EnCycle = "A l'arret";
 		
-		if ($Power=="ON" ){
+		if ($Power=="On" ){
           	$EnCycle = "En veille";
 			if ($Mode=="Chauffage" ){
 				$EnCycle = "En veille mode Chauffage";
@@ -356,7 +356,7 @@ public function ExecuteCmdPompe($VarPilotagePompe) {
 		$login = $this->getConfiguration("Login"); 
 		$password = $this->getConfiguration("Password"); 
 		$setpoint = $this->Lecture_Consigne();	
-		//$power = 'ON';
+		//$power = 'On';
 
 		//Mise en marche de la pompe
 		if ($VarPilotagePompe == 'Marche') {		
@@ -459,9 +459,9 @@ public function ExecuteCmdSetConsigne($VarConsigne) {
 	$login = $this->getConfiguration("Login"); 
 	$password = $this->getConfiguration("Password"); 
 	$setpoint = $VarConsigne; 
-	$power = 'ON';
+	$power = 'On';
 
-if ($power == 'ON') {
+if ($power == 'On') {
   	switch ($setpoint) {
     	case 25:
         	$setpoint = 'qlqxgwEAL6gACEABAQZ8bnR8THxafEw9PQAAAAAAAAAA5BU=';
@@ -890,7 +890,7 @@ class PaC_HaywardCmd extends cmd {
 				//$info = $eqlogic->Lecture_Power(); 	
                 //if ($info != -100) {
 					//$eqlogic->checkAndUpdateCmd('2_Power', $info);
-					$eqlogic->checkAndUpdateCmd('2_Power', 'ON');
+					$eqlogic->checkAndUpdateCmd('2_Power', 'On');
                 //}
             
             	$info = $eqlogic->LectureCycle(); 	
