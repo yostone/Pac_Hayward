@@ -246,7 +246,7 @@ Public function Update() {
 
 	public function Lecture_Mode() {
 		log::add('PaC_Hayward', 'debug','Function Lecture_Mode : Lancement/ok' );
-		$Mode = $this->getCmd(null, '4_Mode');
+		$Mode = $this->getValue('4_Mode');
 		return $Mode ;
 
 		
@@ -276,7 +276,7 @@ Public function Update() {
 	
 	public function Lecture_Power() {
 		log::add('PaC_Hayward', 'debug','Function Lecture_Power : Lancement/ok' );
-		$Power = $this->getCmd(null, '2_Power');
+		$Power = $this->getValue('2_Power');
 		return $Power ;
 		
 		/*
