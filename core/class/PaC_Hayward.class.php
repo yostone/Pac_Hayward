@@ -251,7 +251,9 @@ Public function Update() {
 	    //$Mode = $this->getCmd(null, '4_Mode');
 	    //return $Mode->getValue();
 		
-		return $this->getCmd(null, '4_Mode');
+		$this->getCmd(null, '4_Mode');
+		$Mode->execCmd();
+		return  $Mode ;
 		
 		//return $Mode ;
 		
@@ -286,7 +288,9 @@ Public function Update() {
         //$Power = $this->getCmd(null, '2_Power');
 	    //return $Power->getValue();
 		
-		return $this->getCmd(null, '2_Power');
+	    $this->getCmd(null, '2_Power');
+		$Power->execCmd();
+		return  $Power ;
 		
 		//return $Power ;
 		
