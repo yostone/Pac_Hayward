@@ -317,14 +317,17 @@ Public function Update() {
 		if ($Power=="ON" ){
           	$EnCycle = "En veille";
 			if ($Mode=="Chauffage" ){
+				$EnCycle = "En veille mode Chauffage";
 				if ($SortieEau>=$EntreeEau+1 and $EntreeEau<=$Consigne){
 					$EnCycle= "En chauffe";
 				}
 			} elseif ($Mode=="Refroidissement" ){
+				$EnCycle = "En veille mode Refroidissement";
 				if ($EntreeEau>=$SortieEau+1 and $SortieEau>=$Consigne){
 					$EnCycle= "En refroidissement";
 				}
 			} elseif ($Mode=="Auto" ){
+				$EnCycle = "En veille mode Auto";
 				if ($SortieEau>=$EntreeEau+1 and $EntreeEau<=$Consigne){
 					$EnCycle= "En chauffe";
                 } elseif ($EntreeEau>=$SortieEau+1 and $SortieEau>=$Consigne){
