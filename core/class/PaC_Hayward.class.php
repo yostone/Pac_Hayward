@@ -249,8 +249,9 @@ Public function Update() {
 		//$Mode = $this->getConfiguration('4_Mode');
 
 	    $Mode = $this->getCmd(null, '4_Mode');
-	    $Mode->execCmd();
-		return $Mode ;
+	    return $Mode->getValue();
+		
+		//return $Mode ;
 		
 		/*
 		log::add('PaC_Hayward', 'debug','Function Lecture_Mode : Lancement' );
@@ -281,9 +282,9 @@ Public function Update() {
 		//$Power = $this->getConfiguration('2_Power');
 		
         $Power = $this->getCmd(null, '2_Power');
-	    $Power->execCmd();
+	    return $Power->getValue();
 		
-		return $Power ;
+		//return $Power ;
 		
 		/*
 		log::add('PaC_Hayward', 'debug','Function Lecture_Power : Lancement' );
