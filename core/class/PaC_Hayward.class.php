@@ -251,11 +251,15 @@ Public function Update() {
 	    //$Mode = $this->getCmd(null, '4_Mode');
 	    //return $Mode->getValue();
 		
-		$this->getCmd(null, '4_Mode');
-		$Mode->execCmd();
-		return  $Mode ;
+		//$this->getCmd(null, '4_Mode');
+		//$Mode->execCmd();
+		//return  $Mode ;
 		
-		//return $Mode ;
+	    $tmp = $this->getCmd(null, '4_Mode');
+        $Mode = $tmp->execCmd();
+		
+		
+		return $Mode ;
 		
 		/*
 		log::add('PaC_Hayward', 'debug','Function Lecture_Mode : Lancement' );
@@ -288,11 +292,14 @@ Public function Update() {
         //$Power = $this->getCmd(null, '2_Power');
 	    //return $Power->getValue();
 		
-	    $this->getCmd(null, '2_Power');
-		$Power->execCmd();
-		return  $Power ;
+	    //$this->getCmd(null, '2_Power');
+		//$Power->execCmd();
 		
-		//return $Power ;
+		
+		$tmp = $this->getCmd(null, '2_Power');
+        $Power = $tmp->execCmd();
+		
+		return $Power ;
 		
 		/*
 		log::add('PaC_Hayward', 'debug','Function Lecture_Power : Lancement' );
