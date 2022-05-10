@@ -318,8 +318,11 @@ Public function Update() {
           	$EnCycle = "En veille";
 			if ($Mode=="Chauffage" ){
 				$EnCycle = "En veille mode Chauffage";
-				if ($SortieEau >= $EntreeEau +1 && $EntreeEau <= $Consigne){
-					$EnCycle = "En chauffe";
+				if ($SortieEau >= $EntreeEau +1){
+					$EnCycle = "En chauffe Sortie eau plus haut";
+					if ($EntreeEau <= $Consigne){
+						$EnCycle = "En veille consigne atteinte";
+					}
 				}
 			} elseif ($Mode=="Refroidissement" ){
 				$EnCycle = "En veille mode Refroidissement";
