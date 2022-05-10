@@ -246,18 +246,8 @@ Public function Update() {
 
 	public function Lecture_Mode() {
 		log::add('PaC_Hayward', 'debug','Function Lecture_Mode : Lancement/ok' );
-		//$Mode = $this->getConfiguration('4_Mode');
-
-	    //$Mode = $this->getCmd(null, '4_Mode');
-	    //return $Mode->getValue();
-		
-		//$this->getCmd(null, '4_Mode');
-		//$Mode->execCmd();
-		//return  $Mode ;
-		
 	    $tmp = $this->getCmd(null, '4_Mode');
         $Mode = $tmp->execCmd();
-		
 		
 		return $Mode ;
 		
@@ -287,15 +277,6 @@ Public function Update() {
 	
 	public function Lecture_Power() {
 		log::add('PaC_Hayward', 'debug','Function Lecture_Power : Lancement/ok' );
-		//$Power = $this->getConfiguration('2_Power');
-		
-        //$Power = $this->getCmd(null, '2_Power');
-	    //return $Power->getValue();
-		
-	    //$this->getCmd(null, '2_Power');
-		//$Power->execCmd();
-		
-		
 		$tmp = $this->getCmd(null, '2_Power');
         $Power = $tmp->execCmd();
 		
@@ -333,7 +314,7 @@ Public function Update() {
 		$Power = $this->Lecture_Power();		
 		$EnCycle = "A l'arret";
 		
-		if ($Power=="On" ){
+		if ($Power=="ON" ){
           	$EnCycle = "En veille";
 			if ($Mode=="Chauffage" ){
 				if ($SortieEau>=$EntreeEau+1 and $EntreeEau<=$Consigne){
@@ -897,7 +878,7 @@ class PaC_HaywardCmd extends cmd {
 				//$info = $eqlogic->Lecture_Power(); 	
                 //if ($info != -100) {
 					//$eqlogic->checkAndUpdateCmd('2_Power', $info);
-					$eqlogic->checkAndUpdateCmd('2_Power', 'Marche');
+					$eqlogic->checkAndUpdateCmd('2_Power', 'ON');
                 //}
             
             	$info = $eqlogic->LectureCycle(); 	
