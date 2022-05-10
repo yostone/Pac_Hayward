@@ -863,10 +863,11 @@ class PaC_HaywardCmd extends cmd {
 					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
                 }
             
-				$info = $eqlogic->Lecture_Power(); 	
-                if ($info != -100) {
-					$eqlogic->checkAndUpdateCmd('2_Power', $info);
-                }
+				//$info = $eqlogic->Lecture_Power(); 	
+                //if ($info != -100) {
+					//$eqlogic->checkAndUpdateCmd('2_Power', $info);
+					$eqlogic->checkAndUpdateCmd('2_Power', 'Marche');
+                //}
             
             	$info = $eqlogic->LectureCycle(); 	
                 if ($info != -100) {
@@ -898,10 +899,11 @@ class PaC_HaywardCmd extends cmd {
 					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
                 }
                   
-				$info = $eqlogic->Lecture_Power(); 	
-                if ($info != -100) {
-					$eqlogic->checkAndUpdateCmd('2_Power', $info);
-                }
+				//$info = $eqlogic->Lecture_Power(); 	
+                //if ($info != -100) {
+				//	$eqlogic->checkAndUpdateCmd('2_Power', $info);
+					$eqlogic->checkAndUpdateCmd('2_Power', 'Arret');
+                //}
                   
             	$info = $eqlogic->LectureCycle(); 	
                 if ($info != -100) {
@@ -928,10 +930,11 @@ class PaC_HaywardCmd extends cmd {
 					$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
                 }
                   
-				$info = $eqlogic->Lecture_Mode(); 	
-                if ($info != -100) {
-					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
-                }
+				//$info = $eqlogic->Lecture_Mode(); 	
+                //if ($info != -100) {
+				//	$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+					$eqlogic->checkAndUpdateCmd('4_Mode','Refroidissement'); 
+                //}
                   
 				$info = $eqlogic->Lecture_Power(); 	
                 if ($info != -100) {
@@ -963,10 +966,11 @@ class PaC_HaywardCmd extends cmd {
 					$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
                 }
                   
-				$info = $eqlogic->Lecture_Mode(); 	
-                if ($info != -100) {
-					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
-                }
+				//$info = $eqlogic->Lecture_Mode(); 	
+                //if ($info != -100) {
+				//	$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+					$eqlogic->checkAndUpdateCmd('4_Mode', 'Chauffage'); 
+                //}
                   
 				$info = $eqlogic->Lecture_Power(); 	
                 if ($info != -100) {
@@ -998,10 +1002,11 @@ class PaC_HaywardCmd extends cmd {
 					$eqlogic->checkAndUpdateCmd('1_SortieEau', $info); 
                 }
                   
-				$info = $eqlogic->Lecture_Mode(); 	
-                if ($info != -100) {
-					$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
-                }  
+				//$info = $eqlogic->Lecture_Mode(); 	
+                //if ($info != -100) {
+				//	$eqlogic->checkAndUpdateCmd('4_Mode', $info); 
+					$eqlogic->checkAndUpdateCmd('4_Mode', 'Auto'); 
+                //}  
                   
 				$info = $eqlogic->Lecture_Power(); 	
                 if ($info != -100) {
